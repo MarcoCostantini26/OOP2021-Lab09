@@ -42,7 +42,6 @@ public class ConcurrentGUI extends JFrame{
         this.setVisible(true);
         
         final Agent agent = new Agent();
-        new Thread(agent).start();
         
         stop.addActionListener(new ActionListener() {
             /**
@@ -85,6 +84,8 @@ public class ConcurrentGUI extends JFrame{
                 agent.setIncrement();
             }
         });
+        
+        new Thread(agent).start();
     }
     
     private class Agent implements Runnable {
