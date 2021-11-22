@@ -3,6 +3,8 @@ package it.unibo.oop.lab.reactivegui02;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.BoxLayout;
@@ -39,10 +41,38 @@ public class ConcurrentGUI extends JFrame{
         
         final Agent agent = new Agent();
         new Thread(agent).start();
+        
+        stop.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                agent.stopCounter();
+                down.setEnabled(false);
+                up.setEnabled(false);
+                stop.setEnabled(false);
+            }
+        });
+        
+        down.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                agent.setDown();
+            }
+        });
+        
+        up.addActionListener(new ActionListener() {
+            
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                agent.setUp();
+            }
+        });
     }
     
     private class Agent implements Runnable {
         private volatile boolean stop;
+        private volatile boolean isDown;
         private int counter;
         
         public void run() {
@@ -56,12 +86,28 @@ public class ConcurrentGUI extends JFrame{
                             ConcurrentGUI.this.label.setText(Integer.toString(count));
                         }
                     });
-                    this.counter++;
+                    if(isDown) {
+                        this.counter--;
+                    } else {
+                        this.counter++;
+                    }
                     Thread.sleep(100);
                 }
             } catch (InvocationTargetException | InterruptedException ex) {
                 ex.printStackTrace();
             }
+        }
+        
+        public void stopCounter() {
+            this.stop = true;
+        }
+        
+        public void setDown() {
+            this.isDown = true;
+        }
+        
+        public void setUp() {
+            this.isDown = false;
         }
     }
 

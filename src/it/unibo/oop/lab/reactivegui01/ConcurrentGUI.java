@@ -58,6 +58,7 @@ public final class ConcurrentGUI extends JFrame {
             public void actionPerformed(final ActionEvent e) {
                 // Agent should be final
                 agent.stopCounting();
+                
             }
         });
     }
