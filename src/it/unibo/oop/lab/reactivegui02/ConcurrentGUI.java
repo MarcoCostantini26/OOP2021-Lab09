@@ -1,18 +1,17 @@
 package it.unibo.oop.lab.reactivegui02;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
 
 public class ConcurrentGUI extends JFrame{
 
@@ -27,6 +26,9 @@ public class ConcurrentGUI extends JFrame{
     private final JButton down = new JButton("down");
     private final JButton stop = new JButton("stop");
     
+    /**
+     * Builds a new CGUI.
+     */
     public ConcurrentGUI() {
         super();
         final Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -43,7 +45,12 @@ public class ConcurrentGUI extends JFrame{
         new Thread(agent).start();
         
         stop.addActionListener(new ActionListener() {
-            
+            /**
+             * event handler associated to action event on button stop.
+             * 
+             * @param e
+             *            the action event that will be handled by this listener
+             */
             @Override
             public void actionPerformed(final ActionEvent e) {
                 agent.stopCounter();
@@ -54,7 +61,12 @@ public class ConcurrentGUI extends JFrame{
         });
         
         down.addActionListener(new ActionListener() {
-            
+            /**
+             * event handler associated to action event on button down.
+             * 
+             * @param e
+             *            the action event that will be handled by this listener
+             */
             @Override
             public void actionPerformed(final ActionEvent e) {
                 agent.setDown();
@@ -62,10 +74,15 @@ public class ConcurrentGUI extends JFrame{
         });
         
         up.addActionListener(new ActionListener() {
-            
+            /**
+             * event handler associated to action event on button up.
+             * 
+             * @param e
+             *            the action event that will be handled by this listener
+             */
             @Override
             public void actionPerformed(final ActionEvent e) {
-                agent.setUp();
+                agent.setIncrement();
             }
         });
     }
@@ -97,16 +114,22 @@ public class ConcurrentGUI extends JFrame{
                 ex.printStackTrace();
             }
         }
-        
+        /**
+         * External command to stop counting.
+         */
         public void stopCounter() {
             this.stop = true;
         }
-        
+        /**
+         * Set is Down true
+         */
         public void setDown() {
             this.isDown = true;
         }
-        
-        public void setUp() {
+        /**
+         * Set is Down false
+         */
+        public void setIncrement() {
             this.isDown = false;
         }
     }
