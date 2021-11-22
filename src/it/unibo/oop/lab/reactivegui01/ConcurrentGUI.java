@@ -78,12 +78,13 @@ public final class ConcurrentGUI extends JFrame {
          * 
          */
         private volatile boolean stop;
-        private volatile int counter;
+        private int counter;
 
         @Override
         public void run() {
             while (!this.stop) {
                 try {
+                    final int count = this.counter; 
                     /*
                      * All the operations on the GUI must be performed by the
                      * Event-Dispatch Thread (EDT)!
@@ -92,7 +93,7 @@ public final class ConcurrentGUI extends JFrame {
                         @Override
                         public void run() {
                             // This will happen in the EDT: since i'm reading counter it needs to be volatile.
-                            ConcurrentGUI.this.display.setText(Integer.toString(Agent.this.counter));
+                            ConcurrentGUI.this.display.setText(Integer.toString(count));
                         }
                     });
                     /*
@@ -100,7 +101,6 @@ public final class ConcurrentGUI extends JFrame {
                      * so the concurrent access is potentially not safe. In the specific case of this exercise,
                      * we do synchronization with invokeAndWait, so it can be ignored.
                      *
-                     * EXERCISE: Can you think of a solution that doesn't require counter to be volatile?
                      */
                     this.counter++;
                     Thread.sleep(100);
